@@ -143,3 +143,7 @@ iex> ParamCheck.run(%{name: "Miles"})
 iex> ParamCheck.run(%{name: 1})
 {:error, [%{input: 1, path: [:name], spec: "is_binary()"}]}
 ```
+
+## Inspiration
+
+This library draws inspiration from https://github.com/zorbash/opus and https://github.com/madeinussr/exop
