@@ -40,8 +40,7 @@ defmodule Codex.MixProject do
       {:stream_data, "~> 0.4", optional: true},
       {:norm, "~> 0.12.0", optional: true},
       {:ex_doc, "~> 0.23", only: [:dev, :test]},
-      {:credo, "~> 1.5", only: [:dev, :test], runtime: false},
-      {:dialyxir, "~> 1.0", only: [:dev], runtime: false}
+      {:credo, "~> 1.5", only: [:dev, :test], runtime: false}
     ]
   end
 end
