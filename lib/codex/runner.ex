@@ -13,41 +13,49 @@ defmodule Codex.Runner do
 
   @doc false
   defp call(module, params, opts) do
-    module.steps
-    |> Enum.reduce_while(params, fn step, acc ->
-      {mod, opts} = step_invocation(step)
+    result =
+      module.steps
+      |> Enum.reduce_while(params, fn step, acc ->
+        {mod, opts} = step_invocation(step)
 
-      result =
-        if function_exported?(mod, :run, 2) do
-          init_opts = mod.init(opts)
+        result =
+          if function_exported?(mod, :run, 2) do
+            init_opts = mod.init(opts)
 
-          case mod.steps() do
-            [] ->
-              case mod.validate(acc) do
-                {:error, error} ->
-                  {:error, error}
+            case mod.steps() do
+              [] ->
+                case mod.validate(acc) do
+                  {:error, error} ->
+                    {:error, error}
 
-                {:ok, result} ->
-                  mod.call(result, init_opts)
-              end
+                  {:ok, result} ->
+                    mod.call(result, init_opts)
+                end
 
-            _steps ->
-              mod.run(acc, init_opts)
+              _steps ->
+                mod.run(acc, init_opts)
+            end
+          else
+            apply(module, mod, [acc])
           end
-        else
-          apply(module, mod, [acc])
+
+        case Codex.Result.halt(result) do
+          {:halt, data} ->
+            {:halt, {:error, data}}
+
+          {:ok, params} ->
+            {:cont, params}
         end
+      end)
 
-      case Codex.Result.halt(result) do
-        {:halt, data} ->
-          {:halt, {:error, data}}
+    case process_result(result) do
+      {:error, error} ->
+        {:error, error}
 
-        {:ok, params} ->
-          {:cont, params}
-      end
-    end)
-    |> module.call(opts)
-    |> process_result
+      {:ok, params} ->
+        module.call(params, opts)
+        |> process_result
+    end
   end
 
   defp process_result(result) do
