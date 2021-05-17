@@ -125,6 +125,6 @@ defmodule CodexTest do
   end
 
   test "ErrorFnCodex returns error after step" do
-    assert ErrorFnCodex.run([:a]) ==   {:error, :fail}
+    assert ErrorFnCodex.run([:a]) == {:error, :fail}
   end
 end
