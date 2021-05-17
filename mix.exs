@@ -5,7 +5,7 @@ defmodule Codex.MixProject do
   def project do
     [
       app: :codex,
-      version: "0.9.0",
+      version: "0.9.1",
       elixir: "~> 1.11",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
