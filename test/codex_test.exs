@@ -109,4 +109,22 @@ defmodule CodexTest do
   test "StepNestedModCodex calls nested module steps" do
     assert StepNestedModCodex.run([:a]) == {:ok, [:b, :c, :a]}
   end
+
+  defmodule ErrorFnCodex do
+    use Codex
+
+    step :error
+
+    def error(args) do
+      {:error, :fail}
+    end
+
+    def call(_params, _opts) do
+      {:ok, 0}
+    end
+  end
+
+  test "ErrorFnCodex returns error after step" do
+    assert ErrorFnCodex.run([:a]) ==   {:error, :fail}
+  end
 end
