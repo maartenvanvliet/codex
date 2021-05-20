@@ -12,18 +12,20 @@ defmodule Codex.Runner do
   end
 
   @doc false
-  defp call(module, params, opts) do
+  defp call(module, params, global_opts) do
     result =
       module.steps
       |> Enum.reduce_while(params, fn step, acc ->
         {mod, opts} = step_invocation(step)
+
+        opts = Keyword.merge(opts, global_opts)
 
         result =
           if function_exported?(mod, :run, 2) do
             init_opts = mod.init(opts)
 
             case mod.steps() do
-              [] ->
+              [:call] ->
                 case mod.validate(acc) do
                   {:error, error} ->
                     {:error, error}
@@ -48,14 +50,7 @@ defmodule Codex.Runner do
         end
       end)
 
-    case process_result(result) do
-      {:error, error} ->
-        {:error, error}
-
-      {:ok, params} ->
-        module.call(params, opts)
-        |> process_result
-    end
+    process_result(result)
   end
 
   defp process_result(result) do

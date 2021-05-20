@@ -1,5 +1,5 @@
 defmodule CodexTest do
-  use ExUnit.Case
+  use ExUnit.Case, async: true
 
   defmodule NoopCodex do
     use Codex
@@ -115,7 +115,7 @@ defmodule CodexTest do
 
     step :error
 
-    def error(args) do
+    def error(_args) do
       {:error, :fail}
     end
 

@@ -1,5 +1,5 @@
 defmodule Codex.ValidatorTest do
-  use ExUnit.Case
+  use ExUnit.Case, async: true
 
   defmodule ParamCodex do
     use Codex

@@ -1,5 +1,5 @@
 defmodule Codex.ResultTest do
-  use ExUnit.Case
+  use ExUnit.Case, async: true
 
   defmodule AcceptTerms do
     use Codex

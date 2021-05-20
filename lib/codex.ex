@@ -62,7 +62,7 @@ defmodule Codex do
   defmacro __before_compile__(_env) do
     quote do
       @doc false
-      def steps, do: @steps |> List.flatten() |> Enum.reverse()
+      def steps, do: (@steps |> List.flatten() |> Enum.reverse()) ++ [:call]
     end
   end
 
