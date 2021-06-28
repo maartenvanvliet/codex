@@ -38,7 +38,7 @@ defmodule Codex.MixProject do
   defp deps do
     [
       {:stream_data, "~> 0.4", optional: true},
-      {:norm, "~> 0.12.0", optional: true},
+      {:norm, "~> 0.13.0", optional: true},
       {:ex_doc, "~> 0.23", only: [:dev, :test]},
       {:credo, "~> 1.5", only: [:dev, :test], runtime: false}
     ]
