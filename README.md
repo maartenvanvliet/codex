@@ -116,7 +116,7 @@ defmodule Double do
 end
 
 # outputs: "double: %{test: 2}" in the inspect step
-iex> ModuleFlow.run(%{test: 2})
+iex> Double.run(%{test: 2})
 {:ok, %{test: 4}}
 ```
 
