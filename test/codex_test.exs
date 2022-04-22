@@ -18,13 +18,18 @@ defmodule CodexTest do
 
     step :b
     step :c
+    step :d, value: 4
 
     def b(args) do
       {:ok, args |> Map.put(:b, 2)}
     end
 
-    def c(args) do
+    def c(args, _opts) do
       {:ok, args |> Map.put(:c, 3)}
+    end
+
+    def d(args, opts) do
+      {:ok, args |> Map.put(:d, opts[:value])}
     end
   end
 
@@ -94,7 +99,7 @@ defmodule CodexTest do
   end
 
   test "StepFnCodex calls functions" do
-    assert StepFnCodex.run(%{a: 1}) == {:ok, %{a: 1, b: 2, c: 3}}
+    assert StepFnCodex.run(%{a: 1}) == {:ok, %{a: 1, b: 2, c: 3, d: 4}}
   end
 
   test "StepModCodex calls modules" do

@@ -20,26 +20,7 @@ defmodule Codex.Runner do
 
         opts = Keyword.merge(opts, global_opts)
 
-        result =
-          if function_exported?(mod, :run, 2) do
-            init_opts = mod.init(opts)
-
-            case mod.steps() do
-              [:call] ->
-                case mod.validate(acc) do
-                  {:error, error} ->
-                    {:error, error}
-
-                  {:ok, result} ->
-                    mod.call(result, init_opts)
-                end
-
-              _steps ->
-                mod.run(acc, init_opts)
-            end
-          else
-            apply(module, mod, [acc])
-          end
+        result = Codex.Step.run(acc, module, mod, opts)
 
         case Codex.Result.halt(result) do
           {:halt, data} ->
